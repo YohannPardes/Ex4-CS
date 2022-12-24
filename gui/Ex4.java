@@ -162,13 +162,13 @@ public class Ex4 implements Ex4_GUI {
 
         // SELECT
         if (p.equals("All")) {
-            selectAll(true);
+            selectHandler(true);
         }
-        if (p.equals("None")) {
-            selectAll(false);
+        else if (p.equals("None")) {
+            selectHandler(false);
         }
-        if (p.equals("Anti")) {
-            selectAnti();
+        else if (p.equals("Anti")) {
+            selectHandler(null);
         }
 
 
@@ -178,6 +178,8 @@ public class Ex4 implements Ex4_GUI {
 
     public void mouseClicked(Point2D p) {
         System.out.println("Mode: " + _mode + "  " + p);
+
+        //SHAPES
         if (_mode.equals("Circle")) {
             if (_gs == null) {
                 _p1 = new Point2D(p);
@@ -202,6 +204,7 @@ public class Ex4 implements Ex4_GUI {
             }
         }
 
+        //FUNCTIONALITIES
         if (_mode.equals("Move")) {
             if (_p1 == null) {
                 _p1 = new Point2D(p);
@@ -212,19 +215,27 @@ public class Ex4 implements Ex4_GUI {
             }
         }
 
+        if (_mode.equals("Scale_90%")){
+            scale(90);
+        }
+
+
+        // SELECT
         if (_mode.equals("Point")) {
-            select(p);
+            selectHandler(p);
         }
 
         drawShapes();
     }
-
     private void selectHandler(Object inp){
         if (inp instanceof Boolean){
             selectAll((Boolean)inp);
         }
-        if (inp instanceof Point2D){
+        else if (inp instanceof Point2D){
             select((Point2D)inp);
+        }
+        else {
+            selectAnti();
         }
     }
     private void select(Point2D p) {
@@ -262,12 +273,13 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
-
+    private void scale(int ratio) {
+        for
+    }
     public void mouseRightClicked(Point2D p) {
         System.out.println("right click!");
 
     }
-
     public void mouseMoved(MouseEvent e) {
         if (_p1 != null) {
             double x1 = StdDraw_Ex4.mouseX();

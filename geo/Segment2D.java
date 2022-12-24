@@ -94,8 +94,8 @@ public class Segment2D implements GeoShapeable{
 
 	@Override
 	public void scale(Point2D center, double ratio) {
-		// TODO Auto-generated method stub
-		
+		this._p1.scale(center, ratio);
+		this._p2.scale(center, ratio);
 	}
 
 	@Override
