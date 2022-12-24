@@ -51,8 +51,7 @@ public class Point2D{
     {
         return this.distance(ORIGIN);
     }
-    public double distance(Point2D p2)
-    {
+    public double distance(Point2D p2) {
         double dx = this.x() - p2.x();
         double dy = this.y() - p2.y();
         double t = (dx*dx+dy*dy);
@@ -83,7 +82,10 @@ public class Point2D{
     	double dy = target.y() - this.y();
     	return new Point2D(dx,dy);
     }
-	
+    /**
+     * This function move the point to a new location modifying the actual point
+     * @param vec The vector that has been add.
+     */
 	public void move(Point2D vec) {
 		this._x += vec.x();
 		this._y += vec.y();
@@ -92,8 +94,15 @@ public class Point2D{
 	/////////////////////// You should implement the methods below ///////////////////////////
 	public void scale(Point2D cen, double ratio) {
 		//////////add your code below ///////////
-		
-		/////////////////////////////////////////
+        // IN WOOOOOOOORK
+//		double sqrdDx = Math.pow(cen.x() - this.x(), 2);
+//        double sqrdDy = Math.pow(cen.y() - this.y(), 2);
+//
+//        double newX = cen.x() + sqrdDx * ratio;
+//        double newY = cen.y() + sqrdDy * ratio;
+//
+//        this.
+		////////////////////////////////////////
 	}
 	public void rotate(Point2D cen, double angleDegrees) {
 		//////////add your code below ///////////

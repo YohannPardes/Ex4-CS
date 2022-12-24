@@ -3,6 +3,7 @@ package Exe.Ex4;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import Exe.Ex4.geo.GeoShapeable;
 import Exe.Ex4.geo.Rect2D;
 
 /**
@@ -67,8 +68,7 @@ public class ShapeCollection implements ShapeCollectionable{
 	@Override
 	public void removeAll() {
 		//////////add your code below ///////////
-		
-		
+		this._shapes.removeAll(this._shapes);
 		//////////////////////////////////////////
 	}
 
