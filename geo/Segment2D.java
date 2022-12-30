@@ -19,10 +19,10 @@ public class Segment2D implements GeoShapeable{
 		this._p2 = p2;
 	}
 	public Point2D get_p1(){
-		return new Point2D(this._p1);
+		return this._p1;
 	}
 	public Point2D get_p2(){
-		return new Point2D(this._p2);
+		return this._p2;
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class Segment2D implements GeoShapeable{
 			double c = this._p1.y() - m * this._p1.x();
 
 			//if the point lay on the line function
-			if (Math.abs(ot.y() - (ot.x()*m + c)) <= 0.02){
+			if (Math.abs(ot.y() - (ot.x()*m + c)) <= 0.03){
 				return true;
 			}
 		}
@@ -94,20 +94,21 @@ public class Segment2D implements GeoShapeable{
 
 	@Override
 	public void scale(Point2D center, double ratio) {
-		this._p1.scale(center, ratio);
-		this._p2.scale(center, ratio);
+		for (Point2D p : this.getPoints()){
+			p.scale(center, ratio);
+		}
 	}
 
 	@Override
 	public void rotate(Point2D center, double angleDegrees) {
-		// TODO Auto-generated method stub
-		
+		for (Point2D p : this.getPoints()){
+			p.rotate(center, angleDegrees);
+		}
 	}
 
 	@Override
 	public Point2D[] getPoints() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Point2D[] {this.get_p1(), this.get_p2()};
 	}
 	
 }

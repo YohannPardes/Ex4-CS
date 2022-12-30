@@ -209,14 +209,26 @@ public class Ex4 implements Ex4_GUI {
             if (_p1 == null) {
                 _p1 = new Point2D(p);
             } else {
-                _p1 = new Point2D(p.x() - _p1.x(), p.y() - _p1.y());
                 move();
                 _p1 = null;
             }
         }
 
+        if (_mode.equals("Rotate")) {
+            if (_p1 == null) {
+                _p1 = new Point2D(p);
+            } else {
+                rotate(_p1, p);
+                _p1 = null;
+            }
+        }
+
         if (_mode.equals("Scale_90%")){
-            scale(90);
+            scale(p, 0.9);
+        }
+
+        if (_mode.equals("Scale_110%")){
+            scale(p, 1.1);
         }
 
 
@@ -273,8 +285,29 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
-    private void scale(int ratio) {
-        for
+    private void scale(Point2D p, double ratio) {
+        for (int i=0; i<this._shapes.size();i+=1){
+            GUI_Shapeable s = _shapes.get(i);
+            if (s.isSelected()) {
+                s.getShape().scale(p, ratio);
+            }
+        }
+    }
+
+    private void rotate(Point2D p1, Point2D p2) {
+        for (int i=0; i<this._shapes.size();i+=1){
+            GUI_Shapeable s = _shapes.get(i);
+            if (s.isSelected()) {
+                double dx = p2.x() - p1.x();
+                double dy = p2.y() - p1.y();
+
+                double wantedRotation = Math.atan(dy/dx);
+                if (dx<0){
+                    wantedRotation += Math.PI;
+                }
+                s.getShape().rotate(p1, Math.toDegrees(wantedRotation));
+            }
+        }
     }
     public void mouseRightClicked(Point2D p) {
         System.out.println("right click!");

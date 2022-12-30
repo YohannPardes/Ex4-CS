@@ -64,14 +64,15 @@ public class Circle2D implements GeoShapeable {
     @Override
     public void scale(Point2D center, double ratio) {
         //////////add your code below ///////////
-
+        this._center.scale(center, ratio);
+        this._radius *= ratio;
         //////////////////////////////////////////
     }
 
     @Override
     public void rotate(Point2D center, double angleDegrees) {
         //////////add your code below ///////////
-
+        this._center.rotate(center, angleDegrees);
         //////////////////////////////////////////
     }
 

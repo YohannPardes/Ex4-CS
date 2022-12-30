@@ -94,11 +94,11 @@ public class Point2D{
 	/////////////////////// You should implement the methods below ///////////////////////////
 	public void scale(Point2D cen, double ratio) {
 		//////////add your code below ///////////
-		double sqrdDx = Math.pow(cen.x() - this.x(), 2);
-        double sqrdDy = Math.pow(cen.y() - this.y(), 2);
+		double dx = this.x() - cen.x();
+        double dy = this.y() - cen.y();
 
-        double newX = cen.x() + sqrdDx * ratio;
-        double newY = cen.y() + sqrdDy * ratio;
+        double newX = cen.x() + dx * ratio;
+        double newY = cen.y() + dy * ratio;
 
         this._x = newX;
         this._y = newY;
@@ -106,7 +106,27 @@ public class Point2D{
 	}
 	public void rotate(Point2D cen, double angleDegrees) {
 		//////////add your code below ///////////
-		
+        double dx = this.x() - cen.x();
+        double dy = this.y() - cen.y();
+
+        // the distance between the clicked point and the actual point
+        double r = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+
+        // adding pi (rad) if the angle in the 3rd or 4th quarter
+        double currentAngle = Math.atan(dy/dx);
+        if (dx<0){
+            currentAngle += Math.PI;
+        }
+        double newAngle = currentAngle + Math.toRadians(angleDegrees);
+
+        // calculating the new pos
+        double newX = cen.x() + r*Math.cos(newAngle);
+        double newY = cen.y() + r*Math.sin(newAngle);
+
+        this._x = newX;
+        this._y = newY;
+
+
 		/////////////////////////////////////////
 	}
    
