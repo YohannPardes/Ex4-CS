@@ -8,6 +8,7 @@ package Exe.Ex4.geo;
  */
 public class Triangle2D implements GeoShapeable{
 
+	private Point2D[] _pts;
 	@Override
 	public boolean contains(Point2D ot) {
 		// TODO Auto-generated method stub
@@ -52,8 +53,7 @@ public class Triangle2D implements GeoShapeable{
 
 	@Override
 	public Point2D[] getPoints() {
-		// TODO Auto-generated method stub
-		return null;
+		return this._pts;
 	}
 	
 }

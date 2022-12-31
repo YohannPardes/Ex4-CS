@@ -2,6 +2,7 @@ package Exe.Ex4.gui;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import Exe.Ex4.Ex4_Const;
 import Exe.Ex4.GUIShape;
@@ -24,14 +25,13 @@ public class Ex4 implements Ex4_GUI {
     private Color _color = Color.blue;
     private boolean _fill = false;
     private String _mode = "";
+    private String prevMode = "";
     private Point2D _p1;
-
+    private ArrayList<Point2D> pts = new ArrayList<>();
     private static Ex4 _winEx4 = null;
-
     private Ex4() {
         init(null);
     }
-
     public void init(ShapeCollectionable s) {
         if (s == null) {
             _shapes = new ShapeCollection();
@@ -45,20 +45,17 @@ public class Ex4 implements Ex4_GUI {
         _mode = "";
         Point2D _p1 = null;
     }
-
     public void show(double d) {
         StdDraw_Ex4.setScale(0, d);
         StdDraw_Ex4.show();
         drawShapes();
     }
-
     public static Ex4 getInstance() {
         if (_winEx4 == null) {
             _winEx4 = new Ex4();
         }
         return _winEx4;
     }
-
     public void drawShapes() {
         StdDraw_Ex4.clear();
         for (int i = 0; i < _shapes.size(); i++) {
@@ -71,7 +68,6 @@ public class Ex4 implements Ex4_GUI {
         }
         StdDraw_Ex4.show();
     }
-
     private static void drawShape(GUI_Shapeable g) {
         StdDraw_Ex4.setPenColor(g.getColor());
         if (g.isSelected()) {
@@ -97,8 +93,16 @@ public class Ex4 implements Ex4_GUI {
 
             StdDraw_Ex4.line(p1.x(), p1.y(), p2.x(), p2.y());
         }
-    }
 
+        if (gs instanceof Rect2D) {
+            Rect2D rect = (Rect2D) gs;
+            if (isFill){
+                StdDraw_Ex4.filledPolygon(rect.getXcoord(), rect.getYcoord());
+            } else {
+                StdDraw_Ex4.polygon(rect.getXcoord(), rect.getYcoord());
+            }
+        }
+    }
     private void setColor(Color c) {
         for (int i = 0; i < _shapes.size(); i++) {
             GUI_Shapeable s = _shapes.get(i);
@@ -107,7 +111,6 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
-
     private void setFill() {
         for (int i = 0; i < _shapes.size(); i++) {
             GUI_Shapeable s = _shapes.get(i);
@@ -116,7 +119,6 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
-
     public void actionPerformed(String p) {
         _mode = p;
         // SETTING COLORS
@@ -174,10 +176,14 @@ public class Ex4 implements Ex4_GUI {
 
         drawShapes();
     }
-
-
     public void mouseClicked(Point2D p) {
         System.out.println("Mode: " + _mode + "  " + p);
+
+        //reseting the variables if the mode has been changed
+        if (prevMode != _mode){
+            pts.clear();
+
+        }
 
         //SHAPES
         if (_mode.equals("Circle")) {
@@ -193,6 +199,18 @@ public class Ex4 implements Ex4_GUI {
         }
 
         if (_mode.equals("Segment")) {
+            if (_gs == null) {
+                _p1 = new Point2D(p);
+            } else {
+                _gs.setColor(_color);
+                _gs.setFilled(_fill);
+                _shapes.add(_gs);
+                _gs = null;
+                _p1 = null;
+            }
+        }
+
+        if (_mode.equals("Rect")) {
             if (_gs == null) {
                 _p1 = new Point2D(p);
             } else {
@@ -293,7 +311,6 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
-
     private void rotate(Point2D p1, Point2D p2) {
         for (int i=0; i<this._shapes.size();i+=1){
             GUI_Shapeable s = _shapes.get(i);
@@ -330,22 +347,28 @@ public class Ex4 implements Ex4_GUI {
                 gs = new Segment2D(_p1, tempP);
             }
 
+            if (_mode.equals("Rect")) {
+                Point2D tempP = new Point2D(StdDraw_Ex4.mouseX(), StdDraw_Ex4.mouseY());
+                Point2D p2 = new Point2D(_p1.x(), y1);
+                Point2D p3 = new Point2D(x1, y1);
+                Point2D p4 = new Point2D(x1, _p1.y());
+                Point2D[] tempPoints = {_p1, p2, p3, p4};
+                gs = new Rect2D(tempPoints);
+            }
+
             _gs = new GUIShape(gs, false, Color.pink, 0);
             drawShapes();
         }
     }
-
     @Override
     public ShapeCollectionable getShape_Collection() {
         // TODO Auto-generated method stub
         return this._shapes;
     }
-
     @Override
     public void show() {
         show(Ex4_Const.DIM_SIZE);
     }
-
     @Override
     public String getInfo() {
         // TODO Auto-generated method stub
