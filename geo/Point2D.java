@@ -125,8 +125,6 @@ public class Point2D{
 
         this._x = newX;
         this._y = newY;
-
-
 		/////////////////////////////////////////
 	}
    

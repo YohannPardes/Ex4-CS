@@ -9,51 +9,54 @@ package Exe.Ex4.geo;
 public class Triangle2D implements GeoShapeable{
 
 	private Point2D[] _pts;
+	Triangle2D(Point2D[] ptSet){
+		this._pts = ptSet;
+	}
 	@Override
 	public boolean contains(Point2D ot) {
-		// TODO Auto-generated method stub
-		return false;
+		return Utils.isIn(this._pts, ot);
 	}
 
 	@Override
 	public double area() {
-		// TODO Auto-generated method stub
-		return 0;
+		return  Utils.calcArea(this.getPoints());
 	}
 
 	@Override
 	public double perimeter() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Utils.calcPerimeter(this.getPoints());
 	}
 
 	@Override
 	public void move(Point2D vec) {
-		// TODO Auto-generated method stub
-		
+		for (Point2D p : this._pts){
+			p.move(vec);
+		}
 	}
 
 	@Override
 	public GeoShapeable copy() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Triangle2D(this._pts);
 	}
 
 	@Override
 	public void scale(Point2D center, double ratio) {
-		// TODO Auto-generated method stub
-		
+		for (Point2D p :
+				this._pts) {
+			p.scale(center, ratio);
+		}
 	}
 
 	@Override
 	public void rotate(Point2D center, double angleDegrees) {
-		// TODO Auto-generated method stub
-		
+		for (Point2D p :
+				this._pts) {
+			p.scale(center, angleDegrees);
+		}
 	}
 
 	@Override
 	public Point2D[] getPoints() {
 		return this._pts;
 	}
-	
 }

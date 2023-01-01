@@ -48,8 +48,8 @@ public class Segment2D implements GeoShapeable{
 		if (ot.x()>= minX && ot.x()<=maxX) {
 
 			//calculating the line function
-			double dy = this._p2.y() - this._p1.y();
 			double dx = this._p2.x() - this._p1.x();
+			double dy = this._p2.y() - this._p1.y();
 			double m = dy / dx;
 			double c = this._p1.y() - m * this._p1.x();
 
