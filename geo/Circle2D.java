@@ -16,6 +16,11 @@ public class Circle2D implements GeoShapeable {
         this._radius = rad;
     }
 
+    public Circle2D(Circle2D circ) {
+        this._center = new Point2D(circ._center);
+        this._radius = circ._radius;
+    }
+
     public double getRadius() {
         return this._radius;
     }
@@ -50,7 +55,7 @@ public class Circle2D implements GeoShapeable {
 
     @Override
     public GeoShapeable copy() {
-        return new Circle2D(_center, _radius);
+        return new Circle2D(this);
     }
 
     @Override

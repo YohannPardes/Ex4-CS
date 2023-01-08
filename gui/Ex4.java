@@ -22,11 +22,13 @@ import Exe.Ex4.geo.*;
 public class Ex4 implements Ex4_GUI {
     private ShapeCollectionable _shapes = new ShapeCollection();
     private GUI_Shapeable _gs;
+    private GUI_Shapeable tempGs;
     private Color _color = Color.blue;
     private boolean _fill = false;
     private String _mode = "";
     private String prevMode = "";
     private Point2D _p1;
+    private Point2D _p2;
     private ArrayList<Point2D> pts = new ArrayList<>();
     private static Ex4 _winEx4 = null;
     private Ex4() {
@@ -66,6 +68,9 @@ public class Ex4 implements Ex4_GUI {
         if (_gs != null) {
             drawShape(_gs);
         }
+        if (tempGs != null){
+            drawShape(tempGs);
+        }
         StdDraw_Ex4.show();
     }
     private static void drawShape(GUI_Shapeable g) {
@@ -102,6 +107,24 @@ public class Ex4 implements Ex4_GUI {
                 StdDraw_Ex4.polygon(rect.getXcoord(), rect.getYcoord());
             }
         }
+
+        if (gs instanceof Triangle2D) {
+            Triangle2D tri = (Triangle2D) gs;
+            if (isFill){
+                StdDraw_Ex4.filledPolygon(tri.getXcoord(), tri.getYcoord());
+            } else {
+                StdDraw_Ex4.polygon(tri.getXcoord(), tri.getYcoord());
+            }
+        }
+
+        if (gs instanceof Polygon2D) {
+            Polygon2D poly = (Polygon2D) gs;
+            if (isFill){
+                StdDraw_Ex4.filledPolygon(poly.getXcoord(), poly.getYcoord());
+            } else {
+                StdDraw_Ex4.polygon(poly.getXcoord(), poly.getYcoord());
+            }
+        }
     }
     private void setColor(Color c) {
         for (int i = 0; i < _shapes.size(); i++) {
@@ -121,6 +144,15 @@ public class Ex4 implements Ex4_GUI {
     }
     public void actionPerformed(String p) {
         _mode = p;
+        if (prevMode != _mode){
+            pts.clear();
+            prevMode = _mode;
+            _p1 = null;
+            _p2 = null;
+            _gs = null;
+            tempGs = null;
+        }
+
         // SETTING COLORS
         if (p.equals("Blue")) {
             _color = Color.BLUE;
@@ -179,12 +211,6 @@ public class Ex4 implements Ex4_GUI {
     public void mouseClicked(Point2D p) {
         System.out.println("Mode: " + _mode + "  " + p);
 
-        //reseting the variables if the mode has been changed
-        if (prevMode != _mode){
-            pts.clear();
-
-        }
-
         //SHAPES
         if (_mode.equals("Circle")) {
             if (_gs == null) {
@@ -221,6 +247,38 @@ public class Ex4 implements Ex4_GUI {
                 _p1 = null;
             }
         }
+
+        if(_mode.equals("Triangle")) {
+            if (_gs == null || this._p2 == null) {
+                if (_p1 != null) {
+                    _p2 = new Point2D(p);
+                }
+                if (_p1 == null) {
+                    _p1 = new Point2D(p);
+                }
+
+            } else {
+                _gs.setColor(_color);
+                _gs.setFilled(_fill);
+                _shapes.add(_gs);
+                _gs = null;
+                _p1 = null;
+                _p2 = null;
+            }
+        }
+
+        if (_mode.equals("Polygon")) {
+            if (_gs == null) {
+                this.pts.add(p);
+            } else {
+                _gs.setColor(_color);
+                _gs.setFilled(_fill);
+                _shapes.add(_gs);
+                _gs = null;
+                pts.clear();
+            }
+        }
+
 
         //FUNCTIONALITIES
         if (_mode.equals("Move")) {
@@ -327,15 +385,15 @@ public class Ex4 implements Ex4_GUI {
         }
     }
     public void mouseRightClicked(Point2D p) {
-        System.out.println("right click!");
-
+        this.pts.add(p);
     }
     public void mouseMoved(MouseEvent e) {
-        if (_p1 != null) {
+        if (_p1 != null || this.pts.size()>0) {
             double x1 = StdDraw_Ex4.mouseX();
             double y1 = StdDraw_Ex4.mouseY();
             GeoShapeable gs = null;
-            //	System.out.println("M: "+x1+","+y1);
+            GeoShapeable tmp = null;
+//          System.out.println("M: "+x1+","+y1);
             Point2D p = new Point2D(x1, y1);
             if (_mode.equals("Circle")) {
                 double r = _p1.distance(p);
@@ -356,6 +414,23 @@ public class Ex4 implements Ex4_GUI {
                 gs = new Rect2D(tempPoints);
             }
 
+            if (_mode.equals("Triangle")){
+                if (_p1 != null && _p2 == null){
+                    Point2D tempP = new Point2D(StdDraw_Ex4.mouseX(), StdDraw_Ex4.mouseY());
+                    tmp = new Segment2D(_p1, tempP);
+                }
+
+                if (_p2 != null){
+                    Point2D tempP = new Point2D(StdDraw_Ex4.mouseX(), StdDraw_Ex4.mouseY());
+                    gs = new Triangle2D(_p1, _p2, tempP);
+                }
+            }
+
+            if (_mode.equals("Polygon")){
+                gs = new Polygon2D(this.pts, new Point2D(StdDraw_Ex4.mouseX(), StdDraw_Ex4.mouseY()));
+            }
+
+            tempGs = new GUIShape(tmp, false, Color.pink, 0);
             _gs = new GUIShape(gs, false, Color.pink, 0);
             drawShapes();
         }

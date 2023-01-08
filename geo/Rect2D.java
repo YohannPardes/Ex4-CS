@@ -15,6 +15,11 @@ public class Rect2D implements GeoShapeable {
 		}
 		this._pts = pts;
 	}
+	public Rect2D(Rect2D rect){
+		for (int i = 0; i <this._pts.length; i++) {
+			this._pts[i] = new Point2D(rect._pts[i]);
+		}
+	}
 
 	public double[] getXcoord(){
 		double[] Xcoor = new double[4];
@@ -59,7 +64,7 @@ public class Rect2D implements GeoShapeable {
 
 	@Override
 	public GeoShapeable copy() {
-		return new Rect2D(this._pts.clone());
+		return new Rect2D(this);
 	}
 
 	@Override
@@ -75,12 +80,21 @@ public class Rect2D implements GeoShapeable {
 		for (Point2D p : this.getPoints()){
 			p.rotate(center, angleDegrees);
 		}
-		
 	}
-
 	@Override
 	public Point2D[] getPoints() {
 		return this._pts;
+	}
+
+	@Override
+	public String toString(){
+		String ans = "";
+
+		for (Point2D p : this._pts){
+			ans += p.toString();
+			ans += ",";
+		}
+		return ans.substring(0, ans.length()-1);
 	}
 
 }

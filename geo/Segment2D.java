@@ -18,6 +18,11 @@ public class Segment2D implements GeoShapeable{
 		this._p1 = p1;
 		this._p2 = p2;
 	}
+
+	public Segment2D(Segment2D seg){
+		this._p1 = new Point2D(seg._p1);
+		this._p2 = new Point2D(seg._p2);
+	}
 	public Point2D get_p1(){
 		return this._p1;
 	}
@@ -110,5 +115,15 @@ public class Segment2D implements GeoShapeable{
 	public Point2D[] getPoints() {
 		return new Point2D[] {this.get_p1(), this.get_p2()};
 	}
-	
+
+	@Override
+	public String toString(){
+		String ans = "";
+
+		for (Point2D p : this.getPoints()){
+			ans += p.toString();
+			ans += ",";
+		}
+		return ans.substring(0, ans.length()-1);
+	}
 }

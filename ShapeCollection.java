@@ -69,7 +69,6 @@ public class ShapeCollection implements ShapeCollectionable{
 	public void removeAll() {
 		//////////add your code below ///////////
 		this._shapes.removeAll(this._shapes);
-		//////////////////////////////////////////
 	}
 
 	@Override
