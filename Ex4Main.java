@@ -18,8 +18,8 @@ public class Ex4Main {
 
 	public static void main(String[] args) {
 		// t1();
-		t2();
-		// t3(); // won't work "out of the box" - requires editing the code (save, load..)
+//		t2();
+		 t3(); // won't work "out of the box" - requires editing the code (save, load..)
 	}
 	// Minimal empty frame (no shapes)
 	public static void t1() {
@@ -40,13 +40,12 @@ public class Ex4Main {
 		shapes.add(gs2);
 		//ex4.init(shapes);
 		ex4.show();
-		System.out.print(ex4.getInfo());
 	}
 	// Loads a file from file a0.txt (Circles only).
 	public static void t3() {
 		Ex4 ex4 = Ex4.getInstance();
 		ShapeCollectionable shapes = ex4.getShape_Collection();
-		String file = "a0.txt"; //make sure the file is your working directory.
+		String file = "mdr"; //make sure the file is your working directory.
 		shapes.load(file);
 		ex4.init(shapes);
 		ex4.show();

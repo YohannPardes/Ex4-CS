@@ -14,18 +14,33 @@ public class Segment2D implements GeoShapeable{
 
 	private Point2D _p1;
 	private Point2D _p2;
+	/**
+	 * given 2 points create a Segment2D
+	 * @param p1
+	 * @param p2
+	 */
 	public Segment2D(Point2D p1, Point2D p2){
 		this._p1 = p1;
 		this._p2 = p2;
 	}
-
+	/**
+	 * copy constructor
+	 * @param seg
+	 */
 	public Segment2D(Segment2D seg){
 		this._p1 = new Point2D(seg._p1);
 		this._p2 = new Point2D(seg._p2);
 	}
+
+	/**
+	 * @return the first point of the segment
+	 */
 	public Point2D get_p1(){
 		return this._p1;
 	}
+	/**
+	 * @return the first point of the segment
+	 */
 	public Point2D get_p2(){
 		return this._p2;
 	}
@@ -86,36 +101,57 @@ public class Segment2D implements GeoShapeable{
 
 		return Math.sqrt(dxSqrd + dySqrd);
 	}
+	/**
+	 * given a vector move the 4 vertex coordinates by this vector
+	 * @param vec - a vector from the 0,0
+	 */
 	@Override
 	public void move(Point2D vec) {
 		this._p1.move(vec);
 		this._p2.move(vec);
 	}
+	/**
+	 * @return return a copy of the point without memory dependencies
+	 */
 	@Override
 	public GeoShapeable copy() {
 
 		return new Segment2D(new Point2D(this._p1), new Point2D(this._p2));
 	}
-
+	/**
+	 * given a reference point and a ratio move the center by this ratio
+	 * enhance the radius by the same ratio
+	 * @param center - center point from which the rescaling is being done.
+	 * @param ratio - the ratio of rescaling.
+	 */
 	@Override
 	public void scale(Point2D center, double ratio) {
 		for (Point2D p : this.getPoints()){
 			p.scale(center, ratio);
 		}
 	}
-
+	/**
+	 * given a pivot point and a degree rotate the segment around the pivot point
+	 * @param center - pivot point from which the rotation is being done.
+	 * @param angleDegrees - the angle (in Degrees) the shape should be rotated by.
+	 */
 	@Override
 	public void rotate(Point2D center, double angleDegrees) {
 		for (Point2D p : this.getPoints()){
 			p.rotate(center, angleDegrees);
 		}
 	}
-
+	/**
+	 * @return return the 2 vertex point of the segment
+	 */
 	@Override
 	public Point2D[] getPoints() {
 		return new Point2D[] {this.get_p1(), this.get_p2()};
 	}
-
+	/**
+	 * to string method for Segment2D
+	 * @return 2 Point2D as an array
+	 */
 	@Override
 	public String toString(){
 		String ans = "";

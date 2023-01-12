@@ -17,16 +17,30 @@ public class GUIShape implements GUI_Shapeable {
     private Color _color;
     private int _tag;
     private boolean _isSelected;
+    private static int count = 0;
 
-    public GUIShape(GeoShapeable g, boolean f, Color c, int t) {
+    public GUIShape(GeoShapeable g, boolean fill, Color color, int tag) {
         _g = null;
         if (g != null) {
             _g = g.copy();
         }
-        _fill = f;
-        _color = c;
-        _tag = t;
+        _fill = fill;
+        _color = color;
+        setTag(tag);
         _isSelected = false;
+
+    }
+
+    public GUIShape(GeoShapeable g, boolean fill, Color color) {
+        _g = null;
+        if (g != null) {
+            _g = g.copy();
+        }
+        _fill = fill;
+        _color = color;
+        setTag(count);
+        _isSelected = false;
+        count ++;
     }
 
     public GUIShape(GUIShape ot) {
@@ -68,7 +82,6 @@ public class GUIShape implements GUI_Shapeable {
         _tag = tag;
 
     }
-
     @Override
     public GUI_Shapeable copy() {
         GUI_Shapeable cp = new GUIShape(this);
@@ -77,23 +90,30 @@ public class GUIShape implements GUI_Shapeable {
 
     @Override
     public String toString() {
-        return null;
+        String ans = "";
+        if (this.getShape() != null) {
+            ans += "GUIShape,";
+            ans += this._color.getRGB();
+            ans += "," + this.isFilled();
+            ans += "," + this.getTag();
+            ans += "," + this.getShape().getClass().getSimpleName();
+            ans += "," + this.getShape().toString();
+        }
+
+        return ans;
     }
 
     private void init(String[] ww) {
 
     }
-
     @Override
     public boolean isSelected() {
         return this._isSelected;
     }
-
     @Override
     public void setSelected(boolean s) {
         this._isSelected = s;
     }
-
     @Override
     public void setShape(GeoShapeable g) {
         // TODO Auto-generated method stub

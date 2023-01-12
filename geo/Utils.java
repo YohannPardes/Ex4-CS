@@ -30,15 +30,15 @@ public class Utils {
      */
     public static double calcArea(Point2D[] pts){
         //sorting to clockwise order
-        pts = clockwiseOrder(pts);
-
-       double area = 0;
-        for (int i = 0; i < pts.length; i++) {
+        Point2D[] tempPts = pts.clone();
+        tempPts = clockwiseOrder(tempPts);
+        double area = 0;
+        for (int i = 0; i < tempPts.length; i++) {
             try {
-                area += pts[i].x() * pts[i + 1].y() - pts[i + 1].x() * pts[i].y();
+                area += tempPts[i].x() * tempPts[i + 1].y() - tempPts[i + 1].x() * tempPts[i].y();
             }
             catch (IndexOutOfBoundsException e) {
-                area += pts[i].x() * pts[0].y() - pts[0].x() * pts[i].y();
+                area += tempPts[i].x() * tempPts[0].y() - tempPts[0].x() * tempPts[i].y();
             }
 
         }

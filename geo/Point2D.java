@@ -39,8 +39,7 @@ public class Point2D{
     public int iy() {return (int)_y;}
   
     public Point2D add(Point2D p) {
-    	Point2D a = new Point2D(p.x()+x(),p.y()+y());
-    	return a;
+    	return new Point2D(p.x()+x(),p.y()+y());
     }
     public String toString()
     {
@@ -60,7 +59,7 @@ public class Point2D{
     @Override
     public boolean equals(Object p)
     {
-        if(p==null || !(p instanceof Point2D)) {return false;}
+        if(!(p instanceof Point2D)) {return false;}
         Point2D p2 = (Point2D)p;
         return ( (_x==p2._x) && (_y==p2._y));
     }

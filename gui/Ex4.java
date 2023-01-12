@@ -11,6 +11,8 @@ import Exe.Ex4.ShapeCollection;
 import Exe.Ex4.ShapeCollectionable;
 import Exe.Ex4.geo.*;
 
+import javax.swing.*;
+
 /**
  * This class is a simple "inter-layer" connecting (aka simplifying) the
  * StdDraw with the Map class.
@@ -179,6 +181,16 @@ public class Ex4 implements Ex4_GUI {
             setColor(_color);
         }
 
+        // COMP
+        if (_mode.equals("ByArea")) {_shapes.sort(ShapeComp.CompByArea);}
+        if (_mode.equals("ByAntiArea")) {_shapes.sort(ShapeComp.CompByAntiArea);}
+        if (_mode.equals("ByPerimeter")) {_shapes.sort(ShapeComp.CompByPerimeter);}
+        if (_mode.equals("ByAntiPerimeter")) {_shapes.sort(ShapeComp.CompByAntiPerimeter);}
+        if (_mode.equals("ByToString")) {_shapes.sort(ShapeComp.CompByToString);}
+        if (_mode.equals("ByToAntiString")) {_shapes.sort(ShapeComp.CompByAntiToString);}
+        if (_mode.equals("ByTag")) {_shapes.sort(ShapeComp.CompByTag);}
+        if (_mode.equals("ByAntiTag")) {_shapes.sort(ShapeComp.CompByAntiTag);}
+
         // SETTING FILL/EMPTY
         if (p.equals("Fill")) {
             _fill = true;
@@ -194,6 +206,13 @@ public class Ex4 implements Ex4_GUI {
             _shapes.removeAll();
         }
 
+        // INFO
+        if (p.equals("Info")){
+            System.out.println(getInfo());
+        }
+
+
+
         // SELECT
         if (p.equals("All")) {
             selectHandler(true);
@@ -203,6 +222,14 @@ public class Ex4 implements Ex4_GUI {
         }
         else if (p.equals("Anti")) {
             selectHandler(null);
+        }
+
+        // LOAD/SAVE
+        if (_mode.equals("Load")){
+            load();
+        }
+        if (_mode.equals("Save")){
+            save();
         }
 
 
@@ -280,12 +307,25 @@ public class Ex4 implements Ex4_GUI {
         }
 
 
-        //FUNCTIONALITIES
+        //DRAWING FUNCTIONALITIES
         if (_mode.equals("Move")) {
             if (_p1 == null) {
                 _p1 = new Point2D(p);
             } else {
-                move();
+                move(p);
+                _p1 = null;
+            }
+        }
+
+        if (_mode.equals("Copy")) {
+            if (_p1 == null) {
+                _p1 = new Point2D(p);
+            } else {
+                int size = _shapes.size();
+                for (int i = 0; i < size; i++) {
+                    _shapes.add(_shapes.get(i).copy());
+                }
+                move(p);
                 _p1 = null;
             }
         }
@@ -313,6 +353,26 @@ public class Ex4 implements Ex4_GUI {
             selectHandler(p);
         }
 
+        drawShapes();
+    }
+    private void save()
+    {
+        FileDialog fd = new FileDialog(new JFrame(), "Save File", FileDialog.SAVE);
+        fd.setDirectory(fd.getDirectory());
+        fd.setVisible(true);
+        String path = fd.getDirectory() + fd.getFile();
+
+        _shapes.save(path);
+    }
+
+    private void load()
+    {
+        FileDialog fd = new FileDialog(new JFrame(), "Load File", FileDialog.LOAD);
+        fd.setDirectory(fd.getDirectory());
+        fd.setVisible(true);
+        String path = fd.getDirectory() + fd.getFile();
+
+        _shapes.load(path);
         drawShapes();
     }
     private void selectHandler(Object inp){
@@ -352,12 +412,12 @@ public class Ex4 implements Ex4_GUI {
             s.setSelected(!s.isSelected());
         }
     }
-    private void move() {
+    private void move(Point2D p) {
         for (int i = 0; i < _shapes.size(); i++) {
             GUI_Shapeable s = _shapes.get(i);
             GeoShapeable g = s.getShape();
-            if (s.isSelected() && g != null) {
-                g.move(_p1);
+            if (s.isSelected() && g!= null) {
+                g.move(_p1.vector(p));
             }
         }
     }
@@ -401,37 +461,33 @@ public class Ex4 implements Ex4_GUI {
             }
 
             if (_mode.equals("Segment")) {
-                Point2D tempP = new Point2D(StdDraw_Ex4.mouseX(), StdDraw_Ex4.mouseY());
+                Point2D tempP = new Point2D(x1, y1);
                 gs = new Segment2D(_p1, tempP);
             }
 
             if (_mode.equals("Rect")) {
-                Point2D tempP = new Point2D(StdDraw_Ex4.mouseX(), StdDraw_Ex4.mouseY());
-                Point2D p2 = new Point2D(_p1.x(), y1);
-                Point2D p3 = new Point2D(x1, y1);
-                Point2D p4 = new Point2D(x1, _p1.y());
-                Point2D[] tempPoints = {_p1, p2, p3, p4};
-                gs = new Rect2D(tempPoints);
+                gs = new Rect2D(_p1, new Point2D(x1, y1));
             }
 
             if (_mode.equals("Triangle")){
                 if (_p1 != null && _p2 == null){
-                    Point2D tempP = new Point2D(StdDraw_Ex4.mouseX(), StdDraw_Ex4.mouseY());
+                    Point2D tempP = new Point2D(x1, y1);
                     tmp = new Segment2D(_p1, tempP);
                 }
 
                 if (_p2 != null){
-                    Point2D tempP = new Point2D(StdDraw_Ex4.mouseX(), StdDraw_Ex4.mouseY());
+                    Point2D tempP = new Point2D(x1, y1);
                     gs = new Triangle2D(_p1, _p2, tempP);
                 }
             }
 
             if (_mode.equals("Polygon")){
-                gs = new Polygon2D(this.pts, new Point2D(StdDraw_Ex4.mouseX(), StdDraw_Ex4.mouseY()));
+                gs = new Polygon2D(this.pts, new Point2D(x1, y1));
             }
 
             tempGs = new GUIShape(tmp, false, Color.pink, 0);
             _gs = new GUIShape(gs, false, Color.pink, 0);
+
             drawShapes();
         }
     }
