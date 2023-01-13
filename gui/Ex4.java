@@ -36,6 +36,11 @@ public class Ex4 implements Ex4_GUI {
     private Ex4() {
         init(null);
     }
+
+    /**
+     * initialize the ShapeCollectionable object and the variables
+     * @param s
+     */
     public void init(ShapeCollectionable s) {
         if (s == null) {
             _shapes = new ShapeCollection();
@@ -49,17 +54,30 @@ public class Ex4 implements Ex4_GUI {
         _mode = "";
         Point2D _p1 = null;
     }
+
+    /**
+     * This function draw the shapes on the canvas
+     * @param d max values x y for the canvas
+     */
     public void show(double d) {
         StdDraw_Ex4.setScale(0, d);
         StdDraw_Ex4.show();
         drawShapes();
     }
+
+    /**
+     * Create and return un instance of Ex4
+     */
     public static Ex4 getInstance() {
         if (_winEx4 == null) {
             _winEx4 = new Ex4();
         }
         return _winEx4;
     }
+
+    /**
+     * Draw all the shapes on the canvas
+     */
     public void drawShapes() {
         StdDraw_Ex4.clear();
         for (int i = 0; i < _shapes.size(); i++) {
@@ -75,6 +93,11 @@ public class Ex4 implements Ex4_GUI {
         }
         StdDraw_Ex4.show();
     }
+
+    /**
+     * given a GUI_Shapeable object draw it on the canvas
+     * @param g
+     */
     private static void drawShape(GUI_Shapeable g) {
         StdDraw_Ex4.setPenColor(g.getColor());
         if (g.isSelected()) {
@@ -128,6 +151,11 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
+
+    /**
+     * Set the color to the selected shapes
+     * @param c
+     */
     private void setColor(Color c) {
         for (int i = 0; i < _shapes.size(); i++) {
             GUI_Shapeable s = _shapes.get(i);
@@ -136,6 +164,10 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
+
+    /**
+     * Set all the selected shapes to be filled
+     */
     private void setFill() {
         for (int i = 0; i < _shapes.size(); i++) {
             GUI_Shapeable s = _shapes.get(i);
@@ -144,6 +176,11 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
+
+    /**
+     * Given the clicked button value handle the behaviors of the button
+     * @param p
+     */
     public void actionPerformed(String p) {
         _mode = p;
         if (prevMode != _mode){
@@ -235,6 +272,12 @@ public class Ex4 implements Ex4_GUI {
 
         drawShapes();
     }
+
+    /**
+     * given a Point2D p apply the wanted behavior accordingly to the selected mode
+     * when the mouse is pressed
+     * @param p
+     */
     public void mouseClicked(Point2D p) {
         System.out.println("Mode: " + _mode + "  " + p);
 
@@ -355,6 +398,10 @@ public class Ex4 implements Ex4_GUI {
 
         drawShapes();
     }
+
+    /**
+     * This function open a save dialog for the shapes to a .txt file
+     */
     private void save()
     {
         FileDialog fd = new FileDialog(new JFrame(), "Save File", FileDialog.SAVE);
@@ -365,6 +412,9 @@ public class Ex4 implements Ex4_GUI {
         _shapes.save(path);
     }
 
+    /**
+     * This function load the shapes from a .txt file (of the save format) to the canvas
+     */
     private void load()
     {
         FileDialog fd = new FileDialog(new JFrame(), "Load File", FileDialog.LOAD);
@@ -375,6 +425,11 @@ public class Ex4 implements Ex4_GUI {
         _shapes.load(path);
         drawShapes();
     }
+
+    /**
+     * this function handle all the select funcction given one the inputs for select
+     * @param inp
+     */
     private void selectHandler(Object inp){
         if (inp instanceof Boolean){
             selectAll((Boolean)inp);
@@ -386,6 +441,11 @@ public class Ex4 implements Ex4_GUI {
             selectAnti();
         }
     }
+
+    /**
+     * given a Point2D select all the shapes that the Point falls into
+     * @param p
+     */
     private void select(Point2D p) {
         for (int i = 0; i < _shapes.size(); i++) {
             GUI_Shapeable s = _shapes.get(i);
@@ -395,6 +455,11 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
+
+    /**
+     * select all the shapes on the canvas
+     * @param on
+     */
     private void selectAll(boolean on) {
         for (int i = 0; i < _shapes.size(); i++) {
             GUI_Shapeable s = _shapes.get(i);
@@ -406,12 +471,21 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
+
+    /**
+     * unselect all the already selected shapes and select all the others
+     */
     private void selectAnti() {
         for (int i = 0; i < _shapes.size(); i++) {
             GUI_Shapeable s = _shapes.get(i);
             s.setSelected(!s.isSelected());
         }
     }
+
+    /**
+     * move all the selected shapes by a given vector
+     * @param p
+     */
     private void move(Point2D p) {
         for (int i = 0; i < _shapes.size(); i++) {
             GUI_Shapeable s = _shapes.get(i);
@@ -421,6 +495,12 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
+
+    /**
+     * Apply the scale function on each selected shape
+     * @param p the center point
+     * @param ratio the ratio to apply
+     */
     private void scale(Point2D p, double ratio) {
         for (int i=0; i<this._shapes.size();i+=1){
             GUI_Shapeable s = _shapes.get(i);
@@ -429,6 +509,12 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
+
+    /**
+     * rotate all the shapes on the canvas
+     * @param p1 the pivot point
+     * @param p2 the point that decide the angle to rotate
+     */
     private void rotate(Point2D p1, Point2D p2) {
         for (int i=0; i<this._shapes.size();i+=1){
             GUI_Shapeable s = _shapes.get(i);
@@ -444,9 +530,21 @@ public class Ex4 implements Ex4_GUI {
             }
         }
     }
+
+    /**
+     * The function that handle what to do when the right mouse button is pressed
+     * currently adding a point to the polygon point array when creating one
+     * @param p the point to add
+     */
     public void mouseRightClicked(Point2D p) {
         this.pts.add(p);
     }
+
+    /**
+     * The function that is triggered when the mouse is moving on the canvas
+     * here to draw the shapes show the shape as it's been created
+     * @param e
+     */
     public void mouseMoved(MouseEvent e) {
         if (_p1 != null || this.pts.size()>0) {
             double x1 = StdDraw_Ex4.mouseX();
@@ -491,18 +589,29 @@ public class Ex4 implements Ex4_GUI {
             drawShapes();
         }
     }
+
+    /**
+     * getter for the shape collection
+     * @return
+     */
     @Override
     public ShapeCollectionable getShape_Collection() {
-        // TODO Auto-generated method stub
         return this._shapes;
     }
+
+    /**
+     * Apply the show function with the DIM_SIZE constant for EX4
+     */
     @Override
     public void show() {
         show(Ex4_Const.DIM_SIZE);
     }
+
+    /**
+     * This function return all the toString data of each shapes on the canvas as a String
+     */
     @Override
     public String getInfo() {
-        // TODO Auto-generated method stub
         String ans = "";
         for (int i = 0; i < _shapes.size(); i++) {
             GUI_Shapeable s = _shapes.get(i);

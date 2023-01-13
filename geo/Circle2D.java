@@ -35,6 +35,10 @@ public class Circle2D implements GeoShapeable {
     public double getRadius() {
         return this._radius;
     }
+    public Point2D getCenter() {
+        return this._center;
+    }
+
 
     /**
      * to string method for Circle2D
