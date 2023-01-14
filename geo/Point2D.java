@@ -113,6 +113,9 @@ public class Point2D{
 
         // adding pi (rad) if the angle in the 3rd or 4th quarter
         double currentAngle = Math.atan(dy/dx);
+        if (dx == 0){
+            currentAngle = 0;
+        }
         if (dx<0){
             currentAngle += Math.PI;
         }

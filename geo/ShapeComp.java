@@ -37,7 +37,7 @@ public class ShapeComp implements Comparator<GUI_Shapeable>{
 		//////////add your code below ///////////
 
 		if(_flag == Ex4_Const.Sort_By_Anti_toString) {
-			ans = o1.toString().compareTo(o2.toString());
+			ans = -1*o1.toString().compareTo(o2.toString());
 		}
 
 		if(_flag == Ex4_Const.Sort_By_Area) {

@@ -30,17 +30,19 @@ public class Utils {
      */
     public static double calcArea(Point2D[] pts){
         //sorting to clockwise order
-        Point2D[] tempPts = pts.clone();
+        Point2D[] tempPts = new Point2D[pts.length];
+        for (int i=0; i<pts.length; i+=1){
+            tempPts[i] = new Point2D(pts[i]);
+        }
         tempPts = clockwiseOrder(tempPts);
         double area = 0;
         for (int i = 0; i < tempPts.length; i++) {
             try {
-                area += tempPts[i].x() * tempPts[i + 1].y() - tempPts[i + 1].x() * tempPts[i].y();
+                area += (tempPts[i].x() * tempPts[i + 1].y() - tempPts[i + 1].x() * tempPts[i].y());
             }
             catch (IndexOutOfBoundsException e) {
-                area += tempPts[i].x() * tempPts[0].y() - tempPts[0].x() * tempPts[i].y();
+                area += (tempPts[i].x() * tempPts[0].y() - tempPts[0].x() * tempPts[i].y());
             }
-
         }
         area = 0.5*Math.abs(area);
 
@@ -54,16 +56,20 @@ public class Utils {
      */
     public static Point2D[] clockwiseOrder(Point2D[] pointSet){
 
+        Point2D[] clockWisePts = new Point2D[pointSet.length];
+        for (int i=0; i<pointSet.length; i+=1){
+            clockWisePts[i] = new Point2D(pointSet[i]);
+        }
         Point2D center = pointSet[0];
-        int n = pointSet.length;
+        int n = clockWisePts.length;
         for (int i = 0; i < n - 1; i++)
             for (int j = 0; j < n - i - 1; j++)
-                if (calcAngle(center, pointSet[j]) > calcAngle(center, pointSet[j + 1])) {
-                    Point2D temp = new Point2D(pointSet[j]);
-                    pointSet[j] = pointSet[j + 1];
-                    pointSet[j + 1] = temp;
+                if (calcAngle(center, clockWisePts[j]) > calcAngle(center, clockWisePts[j + 1])) {
+                    Point2D temp = new Point2D(clockWisePts[j]);
+                    clockWisePts[j] = clockWisePts[j + 1];
+                    clockWisePts[j + 1] = temp;
                 }
-        return pointSet;
+        return clockWisePts;
     }
 
     /**
@@ -77,7 +83,6 @@ public class Utils {
         double dy = p.y() - center.y();
 
         // the distance between the clicked point and the actual point
-        double r = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
         double angle = Math.atan(dy/dx);
         if (p.x()<0){
             angle += Math.PI;
@@ -94,10 +99,10 @@ public class Utils {
         double perim = 0;
         for (int i = 0; i < pointSet.length; i++) {
             try {
-                perim += Math.sqrt(Math.pow(pointSet[i].x()-pointSet[i + 1].x(), 2) + Math.pow(pointSet[i].x()-pointSet[i + 1].x(), 2));
+                perim += Math.sqrt(Math.pow(pointSet[i].x()-pointSet[i + 1].x(), 2) + Math.pow(pointSet[i].y()-pointSet[i + 1].y(), 2));
             }
             catch (IndexOutOfBoundsException e) {
-                perim += Math.sqrt(Math.pow(pointSet[i].x()-pointSet[0].x(), 2) + Math.pow(pointSet[i].x()-pointSet[0].x(), 2));            }
+                perim += Math.sqrt(Math.pow(pointSet[i].x()-pointSet[0].x(), 2) + Math.pow(pointSet[i].y()-pointSet[0].y(), 2));            }
 
         }
         return perim;

@@ -17,9 +17,7 @@ import Exe.Ex4.gui.Ex4;
 public class Ex4Main {
 
 	public static void main(String[] args) {
-		// t1();
-//		t2();
-		 t3(); // won't work "out of the box" - requires editing the code (save, load..)
+		t1();
 	}
 	// Minimal empty frame (no shapes)
 	public static void t1() {

@@ -22,7 +22,7 @@ public interface GUI_Shapeable {
 	 */
 	public GeoShapeable getShape();
 	/**
-	 * Sets the inner geo shaoe contains in this class.
+	 * Sets the inner geo shape contains in this class.
 	 * @param g
 	 */
 	public void setShape(GeoShapeable g);
